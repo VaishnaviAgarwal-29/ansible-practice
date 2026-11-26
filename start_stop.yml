@@ -1,0 +1,25 @@
+
+
+- name: Control nginx service
+  hosts: servers
+  become: yes
+
+  tasks:
+    - name: Install nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+      tags: install
+
+    - name: Start nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+      tags: start
+
+    - name: Stop nginx
+      ansible.builtin.service:
+        name: nginx
+        state: stopped
+      tags: stop
+
