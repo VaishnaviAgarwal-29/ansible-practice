@@ -1,0 +1,27 @@
+---
+- name: Deploy app to workers
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Install nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+
+    - name: Copy the app file
+      ansible.builtin.copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      notify: Restart nginx
+
+    - name: Make sure nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
